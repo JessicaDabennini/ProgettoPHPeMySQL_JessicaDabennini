@@ -11,6 +11,7 @@ class Orders {
     public $co2_saved;
     public $product_name;
     public $id;
+    public $total_co2_saved;
 
     // Costruttore
     public function __construct($db) {
@@ -147,33 +148,74 @@ class Orders {
     //     return $stmt;
     // }
 
-function tableJoin() {
-        $query = "
-            SELECT
-                o.sales_date,
-                o.destination_country,
-                o.product_id,
-                o.quantity,
-                (o.quantity * p.co2_saved) AS total_co2_saved,
-                p.product_name
-            FROM
-                " . $this->table_name . " o
-            JOIN
-                products p ON o.product_id = p.id
-        ";
-        $stmt = $this->conn->prepare($query);
-         if ($stmt) { // Check if prepare was successful
-            if ($stmt->execute()) {
-                return $stmt;
-            } else {
-                error_log("Error executing query: " . print_r($stmt->errorInfo(), true)); // Log the error
-                return false; // Or throw an exception
-            }
-        } else {
-            error_log("Error preparing query: " . print_r($this->conn->errorInfo(), true));
-            return false; // Or throw an exception
-        }
+    public function tableJoin($startDate, $endDate, $country, $product) {
+    $query = "SELECT     o.sales_date,
+               o.destination_country,
+                 o.product_id,
+                 o.quantity,
+                 (o.quantity * p.co2_saved) AS total_co2_saved,
+                 p.product_name
+            FROM orders o JOIN products p ON o.product_id = p.id WHERE 1=1";
+
+    if ($startDate) {
+        $query .= " AND o.sales_date >= :start_date";
     }
+    if ($endDate) {
+        $query .= " AND o.sales_date <= :end_date";
+    }
+    if ($country) {
+        $query .= " AND o.destination_country = :country";
+    }
+    if ($product) {
+        $query .= " AND p.product_name = :product";
+    }
+
+    $stmt = $this->conn->prepare($query);
+
+    if ($startDate) {
+        $stmt->bindParam(':start_date', $startDate);
+    }
+    if ($endDate) {
+        $stmt->bindParam(':end_date', $endDate);
+    }
+    if ($country) {
+        $stmt->bindParam(':country', $country);
+    }
+    if ($product) {
+        $stmt->bindParam(':product', $product);
+    }
+
+    $stmt->execute();
+    return $stmt;
+}
+
+// function tableJoin() {
+//         $query = "
+//             SELECT
+//                 o.sales_date,
+//                 o.destination_country,
+//                 o.product_id,
+//                 o.quantity,
+//                 (o.quantity * p.co2_saved) AS total_co2_saved,
+//                 p.product_name
+//             FROM
+//                 " . $this->table_name . " o
+//             JOIN
+//                 products p ON o.product_id = p.id
+//         ";
+//         $stmt = $this->conn->prepare($query);
+//          if ($stmt) { // Check if prepare was successful
+//             if ($stmt->execute()) {
+//                 return $stmt;
+//             } else {
+//                 error_log("Error executing query: " . print_r($stmt->errorInfo(), true)); // Log the error
+//                 return false; // Or throw an exception
+//             }
+//         } else {
+//             error_log("Error preparing query: " . print_r($this->conn->errorInfo(), true));
+//             return false; // Or throw an exception
+//         }
+//     }
     
     public function getTotalCo2Saved() {
         $query = "
