@@ -15,6 +15,7 @@ quantity INT NOT NULL,
 FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
+-- Creating the total_co2_saved view
 SELECT 
     SUM(p.co2_saved * o.quantity) AS total_co2
 FROM 

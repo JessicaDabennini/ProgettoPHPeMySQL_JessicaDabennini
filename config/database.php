@@ -1,13 +1,11 @@
 <?php
 class Database {
-    // Credenziali del database
     private $host = "localhost";
     private $db_name = "refreshfood";
     private $username = "refreshfood";
     private $password = "refreshfood";
     public $conn;
 
-    // Connessione al database
     public function getConnection() {
         $this->conn = null;
         try {

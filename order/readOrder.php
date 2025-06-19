@@ -1,4 +1,5 @@
 <?php
+
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 
@@ -14,28 +15,7 @@ if ($db === null) {
     exit();
 }
 
-// $product = new Product($db);
 $order = new Orders($db);
-
-
-// Esecuzione della query per leggere i product
-// $stmt_product = $product->read();
-// $num_product = $stmt_product->rowCount();
-
-// if($num_product > 0) {
-//     $product_arr = array();
-//     $product_arr["list"] = array();
-
-//     while ($row_product = $stmt_product->fetch(PDO::FETCH_ASSOC)) {
-//         extract($row_product);
-//         $product_item = array(
-//             "product_name" => $product_name,
-//             "co2_saved" => $co2_saved
-//         );
-//         array_push($product_arr["list"], $product_item);
-//     }
-// }
-
 
 $stmt_orders = $order->read();
 $num_orders = $stmt_orders->rowCount();

@@ -1,5 +1,5 @@
 <?php
-// Headers per la gestione delle richieste HTTP
+
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST, DELETE");
@@ -10,16 +10,13 @@ include_once '../config/database.php';
 include_once '../models/orders.php';
 include_once '../models/product.php';
 
-// Connessione al database
 $database = new Database();
 $db = $database->getConnection();
 
 $order = new Orders($db);
 
-// Acquisizione dei dati inviati in formato JSON
 $data = json_decode(file_get_contents("php://input"));
 
-// Assegnazione dell'ISBN all'oggetto Libro
 $order->id = $data->id;
 
 

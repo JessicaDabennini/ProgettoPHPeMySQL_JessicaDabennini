@@ -15,8 +15,7 @@ $db = $database->getConnection();
 $product = new Product($db);
 
 $data = json_decode(file_get_contents("php://input"));
-var_dump($data); // Aggiungi questa riga per il debug
-
+var_dump($data); 
 
 if (isset($data->id)) {
     $product->id = $data->id;
@@ -40,25 +39,5 @@ if (isset($data->id)) {
     echo json_encode(array("risposta" => "ID del prodotto non fornito"));
 }
 
-
-// Update product if product_id is provided
-// if (isset($data->id)) {
-//     $product->id = $data->id; // Assuming 'product_id' is the identifier for the product
-//     $product->product_name = $data->product_name;
-//     $product->co2_saved = $data->co2_saved;
-
-//     if ($order->updateOrder()) {
-//         $response["product_message"] = "Order aggiornato";
-//     } else {
-//         $response["product_message"] = "Impossibile aggiornare il order";
-// }}
-
-// if ($product->updateProduct()) {
-//         http_response_code(200);
-//         echo json_encode(array("risposta" => "Product aggiornato"));
-//     } else {
-//         http_response_code(503);
-//         echo json_encode(array("risposta" => "Impossibile aggiornare il product"));
-//     }
 ?>
 

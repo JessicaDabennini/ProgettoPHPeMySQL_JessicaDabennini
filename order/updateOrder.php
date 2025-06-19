@@ -7,7 +7,6 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 include_once '../config/database.php';
 include_once '../models/orders.php';
-// include_once '../models/product.php';
 
 $database = new Database();
 $db = $database->getConnection();
@@ -16,7 +15,6 @@ $order = new Orders($db);
 
 $data = json_decode(file_get_contents("php://input"));
 
-// Update order if ID is provided
 if (isset($data->id)) {
     $order->id = $data->id; 
     $order->sales_date = $data->sales_date;
