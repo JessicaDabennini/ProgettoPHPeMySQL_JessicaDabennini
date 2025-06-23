@@ -10,7 +10,8 @@ Le API permettono di:
 
 - Gestire prodotti con attributi: **nome** e **CO₂ risparmiata**
 - Gestire ordini di vendita con: **data di vendita**, **paese di destinazione**, e prodotti con relative quantità
-- Visualizzare il **totale della CO₂ risparmiata**, con possibilità di filtrare per intervalli temporali, paese e prodotto
+- Visualizzare il **totale della CO₂ risparmiata**, con possibilità di filtrare per intervalli temporali, paese e nome del prodotto
+- **Counter del totale della CO₂** derivante dalla somma di tutte le vendite.
 
 ---
 
@@ -32,49 +33,68 @@ Le API seguono rigorosamente l'architettura RESTful, utilizzando i seguenti prin
 
 #### Prodotti
 
+- **leggere la tabella dei prodotti**
+- **Endpoint**: `GET /product/readProduct.php`
+
+
 - **Inserimento di un prodotto**
-  - **Endpoint**: `POST /api/prodotti`
+  - **Endpoint**: `POST /product/createProduct.php`
   - **Body**: 
     ```json
-    { "nome": "NomeProdotto", "co2_risparmiata": 10 }
+    { "product_name": "NomeProdotto", "co2_saved": 0.5 }
     ```
 
 - **Modifica di un prodotto**
-  - **Endpoint**: `PUT /api/prodotti/{id}`
+  - **Endpoint**: `PUT /product/updateProduct.php`
   - **Body**: 
     ```json
-    { "nome": "NomeAggiornato", "co2_risparmiata": 15 }
+    { "id": 1,"product_name": "NomeAggiornato", "co2_saved": 0.5 }
     ```
 
 - **Cancellazione di un prodotto**
-  - **Endpoint**: `DELETE /api/prodotti/{id}`
+  - **Endpoint**: `DELETE /product/deleteProduct.php`
+   - **Body**: 
+    ```json
+    { "id": 1 }
+    ```
 
 #### Ordini
 
+- **leggere la tabella degli ordini**
+- **Endpoint**: `GET /order/readOrder.php`
+
+
 - **Inserimento di un ordine**
-  - **Endpoint**: `POST /api/ordini`
+  - **Endpoint**: `POST /order/createOrder.php`
   - **Body**: 
     ```json
-    { "data_vendita": "2023-01-01", "paese_destinazione": "Italia", "prodotti": [{ "id": 1, "quantita": 2 }] }
+    { "sales_date": "2025-01-01", "destination_country": "Italia", "product_id":1, "quantity":23}
     ```
 
 - **Modifica di un ordine**
-  - **Endpoint**: `PUT /api/ordini/{id}`
+  - **Endpoint**: `/order/updateOrder.php`
   - **Body**: 
     ```json
-    { "data_vendita": "2023-01-02", "paese_destinazione": "Francia", "prodotti": [{ "id": 1, "quantita": 3 }] }
+    { "sales_date": "nuovaData", "destination_country": "nuovoPaese", "product_id":2, "quantity":22}
     ```
 
 - **Cancellazione di un ordine**
-  - **Endpoint**: `DELETE /api/ordini/{id}`
+  - **Endpoint**: `DELETE /order/deleteOrder.php`
+   - **Body**: 
+    ```json
+    { "id": 1 }
+    ```
 
 #### Visualizzazione CO₂ Risparmiata
 
+- **Counter totale CO₂ risparmiata**
+  - **Endpoint**: `GET /product/co2tot_counter.php`
+
 - **Totale CO₂ risparmiata**
-  - **Endpoint**: `GET /api/co2`
+  - **Endpoint**: `GET /product/co2.php`
   - **Parametri**: 
     ```
-    ?data_inizio=2023-01-01&data_fine=2023-12-31&paese=Italia&prodotto=NomeProdotto
+    ?start_date=2023-01-01&end_date=2023-12-31&country=Italia&product=NomeProdotto
     ```
 
 ---
